@@ -139,7 +139,7 @@ public class Employee {
             return false;
         }
 
-        Employee employee = (Employee) o;
+        var employee = (Employee) o;
 
         if (!id.equals(employee.id)) {
             return false;
@@ -158,9 +158,10 @@ public class Employee {
     @Override
     public int hashCode() {
         int result = id.hashCode();
-        result = 31 * result + name.hashCode();
-        result = 31 * result + address.hashCode();
-        result = 31 * result + sex.hashCode();
+        int factor = 31;
+        result = factor * result + name.hashCode();
+        result = factor * result + address.hashCode();
+        result = factor * result + sex.hashCode();
         return result;
     }
 

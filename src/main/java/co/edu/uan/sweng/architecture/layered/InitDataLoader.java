@@ -22,8 +22,9 @@ import co.edu.uan.sweng.architecture.layered.repositories.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Component to insert employees into the H2 database.
@@ -36,6 +37,8 @@ import java.util.List;
 @Component
 public class InitDataLoader {
 
+    private static final Logger LOGGER = Logger.getLogger(InitDataLoader.class.getName());
+
     private final EmployeeRepository employeeRepository;
 
     @Autowired
@@ -43,13 +46,16 @@ public class InitDataLoader {
         this.employeeRepository = employeeRepository;
     }
 
+    /**
+     * Loads the employees' data to be saved into the database.
+     */
     public void loadData() {
         createData().forEach(this::save);
     }
 
     private void save(final Employee employee) {
         employeeRepository.save(employee);
-        System.out.println("Successfully saved ::" + employee);
+        LOGGER.log(Level.INFO, "Successfully saved ::{0}", employee);
     }
 
     private List<Employee> createData() {
