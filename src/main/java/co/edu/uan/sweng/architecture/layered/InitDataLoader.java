@@ -41,6 +41,11 @@ public class InitDataLoader {
 
     private final EmployeeRepository employeeRepository;
 
+    /**
+     * Constructor.
+     *
+     * @param employeeRepository the employee repository.
+     */
     @Autowired
     public InitDataLoader(EmployeeRepository employeeRepository) {
         this.employeeRepository = employeeRepository;
