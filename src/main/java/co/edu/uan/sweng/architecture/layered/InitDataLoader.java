@@ -18,7 +18,8 @@
 package co.edu.uan.sweng.architecture.layered;
 
 import co.edu.uan.sweng.architecture.layered.entities.Employee;
-import co.edu.uan.sweng.architecture.layered.repositories.EmployeeRepository;
+import co.edu.uan.sweng.architecture.layered.entities.Job;
+import co.edu.uan.sweng.architecture.layered.services.BusinessDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -39,31 +40,32 @@ public class InitDataLoader {
 
     private static final Logger LOGGER = Logger.getLogger(InitDataLoader.class.getName());
 
-    private final EmployeeRepository employeeRepository;
+    private final BusinessDelegate businessDelegate;
 
     /**
      * Constructor.
      *
-     * @param employeeRepository the employee repository.
+     * @param businessDelegate the business delegate.
      */
     @Autowired
-    public InitDataLoader(EmployeeRepository employeeRepository) {
-        this.employeeRepository = employeeRepository;
+    public InitDataLoader(BusinessDelegate businessDelegate) {
+        this.businessDelegate = businessDelegate;
     }
 
     /**
-     * Loads the employees' data to be saved into the database.
+     * Loads the initial data to be saved into the database.
      */
     public void loadData() {
-        createData().forEach(this::save);
+        createEmployees().forEach(this::save);
+        createJobs().forEach(this::save);
     }
 
-    private void save(final Employee employee) {
-        employeeRepository.save(employee);
-        LOGGER.log(Level.INFO, "Successfully saved ::{0}", employee);
+    private <E> void save(final E entity) {
+        businessDelegate.save(entity);
+        LOGGER.log(Level.INFO, "Successfully saved ::{0}", entity);
     }
 
-    private List<Employee> createData() {
+    private List<Employee> createEmployees() {
         return List.of(
                 new Employee("Shamik Mitra", "BagBazar", "M"),
                 new Employee("Samir Mitra", "BagBazar", "M"),
@@ -71,5 +73,11 @@ public class InitDataLoader {
         );
     }
 
-
+    private List<Job> createJobs() {
+        return List.of(
+                new Job("Programmer", 10000d),
+                new Job("Manager", 20000d),
+                new Job("Designer", 9000d)
+        );
+    }
 }

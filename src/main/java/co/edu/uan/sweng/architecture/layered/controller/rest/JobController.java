@@ -17,7 +17,7 @@
 
 package co.edu.uan.sweng.architecture.layered.controller.rest;
 
-import co.edu.uan.sweng.architecture.layered.entities.Employee;
+import co.edu.uan.sweng.architecture.layered.entities.Job;
 import co.edu.uan.sweng.architecture.layered.services.BusinessDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 /**
- * REST controller for {@link Employee}
+ * REST controller for {@link Job}
  *
  * @author Jorge Garcia
  * @author Diego Poveda
@@ -33,8 +33,8 @@ import java.util.Optional;
  * @since 17
  */
 @RestController
-@RequestMapping("/employees")
-public class EmployeeController {
+@RequestMapping("/jobs")
+public class JobController {
 
     private final BusinessDelegate businessDelegate;
 
@@ -44,30 +44,30 @@ public class EmployeeController {
      * @param businessDelegate the business delegate.
      */
     @Autowired
-    public EmployeeController(BusinessDelegate businessDelegate) {
+    public JobController(BusinessDelegate businessDelegate) {
         this.businessDelegate = businessDelegate;
     }
 
     @GetMapping
-    public Iterable<Employee> findAll() {
-        return businessDelegate.findAll(Employee.class);
+    public Iterable<Job> findAll() {
+        return businessDelegate.findAll(Job.class);
     }
 
     @GetMapping("/{id}")
-    public Employee find(@PathVariable Long id) {
-        return businessDelegate.find(Employee.class, id).orElse(null);
+    public Job find(@PathVariable Long id) {
+        return businessDelegate.find(Job.class, id).orElse(null);
     }
 
     @PostMapping
-    public Employee save(@RequestBody Employee employee) {
-        return businessDelegate.save(employee);
+    public Job save(@RequestBody Job job) {
+        return businessDelegate.save(job);
     }
 
     @DeleteMapping("/{id}")
     public String delete(@PathVariable Long id) {
-        Optional<Employee> employee = businessDelegate.find(Employee.class, id);
+        Optional<Job> employee = businessDelegate.find(Job.class, id);
         if (employee.isEmpty()) {
-            return "Employee Not Exists, Not able to delete.";
+            return "Job Not Exists, Not able to delete.";
         }
 
         businessDelegate.delete(employee.get());

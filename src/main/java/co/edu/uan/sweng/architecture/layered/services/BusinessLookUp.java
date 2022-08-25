@@ -18,6 +18,7 @@
 package co.edu.uan.sweng.architecture.layered.services;
 
 import co.edu.uan.sweng.architecture.layered.entities.Employee;
+import co.edu.uan.sweng.architecture.layered.entities.Job;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -36,9 +37,18 @@ class BusinessLookUp {
 
     private final EmployeeService employeeService;
 
+    private final JobService jobService;
+
+    /**
+     * Constructor.
+     *
+     * @param employeeService the employee service.
+     * @param jobService      the job service.
+     */
     @Autowired
-    BusinessLookUp(EmployeeService employeeService) {
+    BusinessLookUp(EmployeeService employeeService, JobService jobService) {
         this.employeeService = employeeService;
+        this.jobService = jobService;
     }
 
     /**
@@ -59,6 +69,10 @@ class BusinessLookUp {
 
         if (Employee.class.equals(entityType) && Long.class.equals(keyType)) {
             return (BusinessService<E, K>) employeeService;
+        }
+
+        if (Job.class.equals(entityType) && Long.class.equals(keyType)) {
+            return (BusinessService<E, K>) jobService;
         }
 
         throw new IllegalArgumentException("There is no service supported for entity type %s and key type %s."

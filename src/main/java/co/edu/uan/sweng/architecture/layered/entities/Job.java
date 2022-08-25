@@ -24,7 +24,7 @@ import javax.persistence.Id;
 import static javax.persistence.GenerationType.IDENTITY;
 
 /**
- * Employee.
+ * Job.
  *
  * @author Jorge Garcia
  * @author Diego Poveda
@@ -32,31 +32,29 @@ import static javax.persistence.GenerationType.IDENTITY;
  * @since 17
  */
 @Entity
-public class Employee {
+public class Job {
+
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
     private String name;
-    private String address;
-    private String sex;
+    private Double usdSalary;
 
     /**
      * Empty constructor.
      */
-    public Employee() {
+    public Job() {
     }
 
     /**
      * Constructor.
      *
-     * @param name    the name.
-     * @param address the address.
-     * @param sex     the sex.
+     * @param name      the name.
+     * @param usdSalary the USD salary.
      */
-    public Employee(String name, String address, String sex) {
+    public Job(String name, Double usdSalary) {
         this.name = name;
-        this.address = address;
-        this.sex = sex;
+        this.usdSalary = usdSalary;
     }
 
     /**
@@ -96,39 +94,21 @@ public class Employee {
     }
 
     /**
-     * Gets the address.
+     * Gets the USD salary.
      *
-     * @return the address.
+     * @return the USD salary.
      */
-    public String getAddress() {
-        return address;
+    public Double getUsdSalary() {
+        return usdSalary;
     }
 
     /**
-     * Sets the address.
+     * Sets the USD salary.
      *
-     * @param address the address.
+     * @param usdSalary the USD salary.
      */
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    /**
-     * Gets the sex.
-     *
-     * @return the sex.
-     */
-    public String getSex() {
-        return sex;
-    }
-
-    /**
-     * Sets the sex.
-     *
-     * @param sex the sex.
-     */
-    public void setSex(String sex) {
-        this.sex = sex;
+    public void setUsdSalary(Double usdSalary) {
+        this.usdSalary = usdSalary;
     }
 
     @Override
@@ -141,9 +121,8 @@ public class Employee {
             return false;
         }
 
-        var employee = (Employee) o;
-        return id.equals(employee.id) && name.equals(employee.name) && address.equals(employee.address)
-                && sex.equals(employee.sex);
+        var job = (Job) o;
+        return id.equals(job.id) && name.equals(job.name) && usdSalary.equals(job.usdSalary);
 
     }
 
@@ -152,18 +131,16 @@ public class Employee {
         var result = id.hashCode();
         var factor = 31;
         result = factor * result + name.hashCode();
-        result = factor * result + address.hashCode();
-        result = factor * result + sex.hashCode();
+        result = factor * result + usdSalary.hashCode();
         return result;
     }
 
     @Override
     public String toString() {
-        return "Employee{" +
+        return "Job{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", address='" + address + '\'' +
-                ", sex='" + sex + '\'' +
+                ", usdSalary=" + usdSalary +
                 '}';
     }
 }
