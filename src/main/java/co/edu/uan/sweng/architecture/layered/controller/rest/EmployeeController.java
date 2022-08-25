@@ -18,8 +18,11 @@
 package co.edu.uan.sweng.architecture.layered.controller.rest;
 
 import co.edu.uan.sweng.architecture.layered.entities.Employee;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import co.edu.uan.sweng.architecture.layered.services.EmployeeService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 /**
  * REST controller for {@link Employee}
@@ -32,4 +35,42 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/TCS")
 public class EmployeeController {
+
+    private final EmployeeService employeeService;
+
+    /**
+     * Constructor.
+     *
+     * @param employeeService the employee service.
+     */
+    @Autowired
+    public EmployeeController(EmployeeService employeeService) {
+        this.employeeService = employeeService;
+    }
+
+    @GetMapping("/employees")
+    public Iterable<Employee> findAll() {
+        return employeeService.findAll();
+    }
+
+    @GetMapping("/employee/{id}")
+    public Employee find(@PathVariable Long id) {
+        return employeeService.find(id).orElse(null);
+    }
+
+    @PostMapping("/employee")
+    public Employee save() {
+        return employeeService.save(new Employee("Demo Demo", "Demo", "M"));
+    }
+
+    @DeleteMapping("/employee/{id}")
+    public String delete(@PathVariable Long id) {
+        Optional<Employee> employee = employeeService.find(id);
+        if (employee.isEmpty()) {
+            return "Employee Not Exists, Not able to delete.";
+        }
+
+        employeeService.delete(employee.get());
+        return "Deleted Successfully.";
+    }
 }
