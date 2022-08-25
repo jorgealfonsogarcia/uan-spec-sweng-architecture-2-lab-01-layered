@@ -35,7 +35,7 @@ import java.util.logging.Logger;
  * @since 17
  */
 @Service
-public class EmployeeService {
+class EmployeeService implements BusinessService<Employee, Long> {
 
     private static final Logger LOGGER = Logger.getLogger(EmployeeService.class.getName());
 
@@ -47,48 +47,30 @@ public class EmployeeService {
      * @param employeeRepository the employee repository.
      */
     @Autowired
-    public EmployeeService(EmployeeRepository employeeRepository) {
+    EmployeeService(EmployeeRepository employeeRepository) {
         this.employeeRepository = employeeRepository;
     }
 
-    /**
-     * Saves a employee.
-     *
-     * @param employee the employee.
-     * @return the saved employee. If the employee is new, then it's returned with its new id.
-     */
+    @Override
     public Employee save(Employee employee) {
         employee = employeeRepository.save(employee);
         LOGGER.log(Level.INFO, "Employee saved::{0}", employee);
         return employee;
     }
 
-    /**
-     * Finds an employee by its id.
-     *
-     * @param id the id.
-     * @return the requested employee.
-     */
+    @Override
     public Optional<Employee> find(Long id) {
         Optional<Employee> employee = employeeRepository.findById(id);
         LOGGER.log(Level.INFO, "Employee found::{0}", employee);
         return employee;
     }
 
-    /**
-     * Finds all the employees.
-     *
-     * @return all the employees.
-     */
+    @Override
     public Iterable<Employee> findAll() {
         return employeeRepository.findAll();
     }
 
-    /**
-     * Deletes an employee.
-     *
-     * @param employee the employee.
-     */
+    @Override
     public void delete(Employee employee) {
         employeeRepository.delete(employee);
         LOGGER.log(Level.INFO, "Employee deleted::{0}", employee);

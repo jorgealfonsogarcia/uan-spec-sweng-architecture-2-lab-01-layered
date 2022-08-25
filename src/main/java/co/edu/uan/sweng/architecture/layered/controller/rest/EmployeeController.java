@@ -18,7 +18,7 @@
 package co.edu.uan.sweng.architecture.layered.controller.rest;
 
 import co.edu.uan.sweng.architecture.layered.entities.Employee;
-import co.edu.uan.sweng.architecture.layered.services.EmployeeService;
+import co.edu.uan.sweng.architecture.layered.services.BusinessDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,41 +36,41 @@ import java.util.Optional;
 @RequestMapping("/TCS")
 public class EmployeeController {
 
-    private final EmployeeService employeeService;
+    private final BusinessDelegate businessDelegate;
 
     /**
      * Constructor.
      *
-     * @param employeeService the employee service.
+     * @param businessDelegate the business delegate.
      */
     @Autowired
-    public EmployeeController(EmployeeService employeeService) {
-        this.employeeService = employeeService;
+    public EmployeeController(BusinessDelegate businessDelegate) {
+        this.businessDelegate = businessDelegate;
     }
 
     @GetMapping("/employees")
     public Iterable<Employee> findAll() {
-        return employeeService.findAll();
+        return businessDelegate.findAll(Employee.class);
     }
 
     @GetMapping("/employee/{id}")
     public Employee find(@PathVariable Long id) {
-        return employeeService.find(id).orElse(null);
+        return businessDelegate.find(Employee.class, id).orElse(null);
     }
 
     @PostMapping("/employee")
     public Employee save() {
-        return employeeService.save(new Employee("Demo Demo", "Demo", "M"));
+        return businessDelegate.save(new Employee("Demo Demo", "Demo", "M"));
     }
 
     @DeleteMapping("/employee/{id}")
     public String delete(@PathVariable Long id) {
-        Optional<Employee> employee = employeeService.find(id);
+        Optional<Employee> employee = businessDelegate.find(Employee.class, id);
         if (employee.isEmpty()) {
             return "Employee Not Exists, Not able to delete.";
         }
 
-        employeeService.delete(employee.get());
+        businessDelegate.delete(employee.get());
         return "Deleted Successfully.";
     }
 }
