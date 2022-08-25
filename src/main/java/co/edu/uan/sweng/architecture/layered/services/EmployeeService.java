@@ -52,12 +52,12 @@ public class EmployeeService {
     }
 
     /**
-     * Adds a employee.
+     * Saves a employee.
      *
      * @param employee the employee.
-     * @return the added employee with its new id.
+     * @return the saved employee. If the employee is new, then it's returned with its new id.
      */
-    public Employee addEmployee(Employee employee) {
+    public Employee save(Employee employee) {
         employee = employeeRepository.save(employee);
         LOGGER.log(Level.INFO, "Employee saved::{0}", employee);
         return employee;
@@ -69,7 +69,7 @@ public class EmployeeService {
      * @param id the id.
      * @return the requested employee.
      */
-    public Optional<Employee> findEmployeeById(Long id) {
+    public Optional<Employee> find(Long id) {
         Optional<Employee> employee = employeeRepository.findById(id);
         LOGGER.log(Level.INFO, "Employee found::{0}", employee);
         return employee;
@@ -80,7 +80,7 @@ public class EmployeeService {
      *
      * @return all the employees.
      */
-    public Iterable<Employee> findAllEmployee() {
+    public Iterable<Employee> findAll() {
         return employeeRepository.findAll();
     }
 
@@ -89,7 +89,7 @@ public class EmployeeService {
      *
      * @param employee the employee.
      */
-    public void deleteEmployeeById(Employee employee) {
+    public void delete(Employee employee) {
         employeeRepository.delete(employee);
         LOGGER.log(Level.INFO, "Employee deleted::{0}", employee);
     }
