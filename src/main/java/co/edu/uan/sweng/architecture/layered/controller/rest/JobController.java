@@ -74,7 +74,7 @@ public class JobController {
     /**
      * Finds a job by its id.
      *
-     * @param id the id.
+     * @param id the job's id.
      * @return the job.
      */
     @Operation(summary = "Finds a job by its id.")

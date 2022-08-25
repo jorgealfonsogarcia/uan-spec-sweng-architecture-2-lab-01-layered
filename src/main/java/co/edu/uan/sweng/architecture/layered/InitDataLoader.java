@@ -67,9 +67,9 @@ public class InitDataLoader {
 
     private List<Employee> createEmployees() {
         return List.of(
-                new Employee("Shamik Mitra", "BagBazar", "M"),
-                new Employee("Samir Mitra", "BagBazar", "M"),
-                new Employee("Swastika Basu", "Baranagar", "F")
+                new Employee("Caroline Hudson", "729 W Gray St", "F"),
+                new Employee("Joe Fields", "6675 Railroad St", "M"),
+                new Employee("Neil Hawkins", "4508 Preston Rd", "F")
         );
     }
 
