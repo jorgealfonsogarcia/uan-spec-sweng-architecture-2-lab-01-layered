@@ -20,9 +20,10 @@ package co.edu.uan.sweng.architecture.layered.controller.rest;
 import co.edu.uan.sweng.architecture.layered.entities.Employee;
 import co.edu.uan.sweng.architecture.layered.services.BusinessDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 /**
  * REST controller for {@link Employee}
@@ -49,28 +50,29 @@ public class EmployeeController {
     }
 
     @GetMapping
-    public Iterable<Employee> findAll() {
-        return businessDelegate.findAll(Employee.class);
+    public ResponseEntity<Iterable<Employee>> findAll() {
+        return ResponseEntity.ok(businessDelegate.findAll(Employee.class));
     }
 
     @GetMapping("/{id}")
-    public Employee find(@PathVariable Long id) {
-        return businessDelegate.find(Employee.class, id).orElse(null);
+    public ResponseEntity<Employee> find(@PathVariable Long id) {
+        final var employee = businessDelegate.find(Employee.class, id);
+        return employee.isEmpty() ? ResponseEntity.status(NOT_FOUND).build() : ResponseEntity.ok(employee.get());
     }
 
     @PostMapping
-    public Employee save(@RequestBody Employee employee) {
-        return businessDelegate.save(employee);
+    public ResponseEntity<Employee> save(@RequestBody Employee employee) {
+        return ResponseEntity.ok(businessDelegate.save(employee));
     }
 
     @DeleteMapping("/{id}")
-    public String delete(@PathVariable Long id) {
-        Optional<Employee> employee = businessDelegate.find(Employee.class, id);
+    public ResponseEntity<String> delete(@PathVariable Long id) {
+        final var employee = businessDelegate.find(Employee.class, id);
         if (employee.isEmpty()) {
-            return "Employee Not Exists, Not able to delete.";
+            return ResponseEntity.status(NOT_FOUND).body("Employee Not Exists, Not able to delete.");
         }
 
         businessDelegate.delete(employee.get());
-        return "Deleted Successfully.";
+        return ResponseEntity.ok("Deleted Successfully.");
     }
 }
