@@ -17,9 +17,11 @@
 
 package co.edu.uan.sweng.architecture.layered.controller.rest;
 
+import co.edu.uan.sweng.architecture.layered.controller.dto.EmployeeDTO;
 import co.edu.uan.sweng.architecture.layered.entities.Employee;
 import co.edu.uan.sweng.architecture.layered.services.BusinessDelegate;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -93,7 +95,7 @@ public class EmployeeController {
     /**
      * Saves an employee.
      *
-     * @param employee the employee.
+     * @param employeeDTO the employee DTO.
      * @return the saved employee.
      */
     @Operation(summary = "Saves a employee.")
@@ -103,8 +105,10 @@ public class EmployeeController {
             })
     })
     @PostMapping
-    public ResponseEntity<Employee> save(@RequestBody Employee employee) {
-        return ResponseEntity.ok(businessDelegate.save(employee));
+    public ResponseEntity<Employee> save(@Parameter(description = "The employee DTO")
+                                         @RequestBody EmployeeDTO employeeDTO) {
+        return ResponseEntity.ok(businessDelegate.save(new Employee(employeeDTO.id(), employeeDTO.name(),
+                employeeDTO.address(), employeeDTO.sex())));
     }
 
     /**

@@ -22,6 +22,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 import static javax.persistence.GenerationType.IDENTITY;
+import static org.apache.commons.lang3.math.NumberUtils.LONG_ZERO;
 
 /**
  * Job.
@@ -47,12 +48,24 @@ public class Job {
     }
 
     /**
-     * Constructor.
+     * Constructor. The {@code id} is set as zero.
      *
      * @param name      the name.
      * @param usdSalary the USD salary.
      */
     public Job(String name, Double usdSalary) {
+        this(LONG_ZERO, name, usdSalary);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param id        the id.
+     * @param name      the name.
+     * @param usdSalary the USD salary.
+     */
+    public Job(Long id, String name, Double usdSalary) {
+        this.id = id;
         this.name = name;
         this.usdSalary = usdSalary;
     }

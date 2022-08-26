@@ -15,16 +15,20 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.edu.uan.sweng.architecture.layered;
+package co.edu.uan.sweng.architecture.layered.controller.dto;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+import co.edu.uan.sweng.architecture.layered.entities.Job;
 
-@SpringBootTest
-class ApplicationTests {
-
-	@Test
-	void contextLoads() {
-	}
-
+/**
+ * DTO for {@link Job}
+ *
+ * @param id        the id.
+ * @param name      the name.
+ * @param usdSalary the USD salary.
+ * @author Jorge Garcia
+ * @author Diego Poveda
+ * @version 1.0.0
+ * @since 17
+ */
+public record JobDTO(Long id, String name, Double usdSalary) {
 }

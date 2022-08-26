@@ -1,0 +1,72 @@
+'
+' Copyright (C) 2022 Jorge Garcia, Diego Poveda, UAN.
+'
+'     This program is free software: you can redistribute it and/or modify
+'     it under the terms of the GNU General Public License as published by
+'     the Free Software Foundation, either version 3 of the License, or
+'     (at your option) any later version.
+'
+'     This program is distributed in the hope that it will be useful,
+'     but WITHOUT ANY WARRANTY; without even the implied warranty of
+'     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+'     GNU General Public License for more details.
+'
+'     You should have received a copy of the GNU General Public License
+'     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+'
+@startuml sequence
+
+autonumber
+
+actor "HTTP Client"
+
+note left of "HTTP Client"
+Universidad Antonio Nariño
+Especialización en Ingeniería de Software
+Arquitectura de Software II
+Jorge García
+Diego Poveda
+Agosto 2022
+end note
+
+boundary EmployeeController
+
+"HTTP Client" -> EmployeeController:findAll()
+activate EmployeeController
+
+EmployeeController -> BusinessDelegate:findAll(Employee.class)
+activate BusinessDelegate
+
+BusinessDelegate -> BusinessLookUp:getBusinessService(Employee.class, Long.class)
+activate BusinessLookUp
+
+BusinessLookUp -> EmployeeService:lookup instance
+activate EmployeeService
+
+BusinessDelegate <-- BusinessLookUp:EmployeeService instance
+deactivate BusinessLookUp
+
+BusinessDelegate -> EmployeeService:findAll()
+
+EmployeeService -> EmployeeRepository:findAll()
+activate EmployeeRepository
+
+database "H2:lab-01-layered"
+
+EmployeeRepository -> "H2:lab-01-layered":SELECT * FROM EMPLOYEE
+
+EmployeeRepository <-- "H2:lab-01-layered":EMPLOYEE DATA
+
+EmployeeService <-- EmployeeRepository:Iterable<Employee>
+deactivate EmployeeRepository
+
+BusinessDelegate <-- EmployeeService:Iterable<Employee>
+deactivate EmployeeService
+
+EmployeeController <-- BusinessDelegate:Iterable<Employee>
+deactivate BusinessDelegate
+
+"HTTP Client" <-- EmployeeController:ResponseEntity<Iterable<Employee>>
+deactivate EmployeeController
+
+@enduml

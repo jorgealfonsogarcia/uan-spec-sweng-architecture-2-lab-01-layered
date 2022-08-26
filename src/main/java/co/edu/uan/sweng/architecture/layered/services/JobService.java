@@ -47,7 +47,7 @@ class JobService implements BusinessService<Job, Long> {
      * @param jobRepository the job repository.
      */
     @Autowired
-    public JobService(JobRepository jobRepository) {
+    JobService(JobRepository jobRepository) {
         this.jobRepository = jobRepository;
     }
 

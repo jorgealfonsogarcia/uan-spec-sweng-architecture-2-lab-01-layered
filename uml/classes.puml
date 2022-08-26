@@ -1,0 +1,158 @@
+'
+' Copyright (C) 2022 Jorge Garcia, Diego Poveda, UAN.
+'
+'     This program is free software: you can redistribute it and/or modify
+'     it under the terms of the GNU General Public License as published by
+'     the Free Software Foundation, either version 3 of the License, or
+'     (at your option) any later version.
+'
+'     This program is distributed in the hope that it will be useful,
+'     but WITHOUT ANY WARRANTY; without even the implied warranty of
+'     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+'     GNU General Public License for more details.
+'
+'     You should have received a copy of the GNU General Public License
+'     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+'
+@startuml classes
+
+note as note1
+Universidad Antonio Nariño
+Especialización en Ingeniería de Software
+Arquitectura de Software II
+Jorge García
+Diego Poveda
+Agosto 2022
+end note
+
+package co.edu.uan.sweng.architecture.layered {
+    +class Application <<@SpringBootApplication>> <<@EnableJpaRepositories>> {
+        +{static}main(args:String[]):void
+        +loadData(loader:InitDataLoader):CommandLineRunner
+    }
+    +class InitDataLoader <<@Component>> {
+        -businessDelegate:BusinessDelegate
+        +InitDataLoader(businessDelegate:BusinessDelegate)
+        +loadData():void
+        -<E>save(entity:E):void
+        -createEmployees():List<Employee>
+        -createJobs():List<Job>
+    }
+    package controller.rest {
+        +class EmployeeController <<@RestController>> {
+            -businessDelegate:BusinessDelegate
+            +EmployeeController(businessDelegate:BusinessDelegate)
+            +findAll():ResponseEntity<Iterable<Employee>>
+            +find(id:Long):ResponseEntity<Employee>
+            +save(employee:Employee):ResponseEntity<Employee>
+            +delete(id:Long):ResponseEntity<String>
+        }
+        +class JobController <<@RestController>> {
+            -businessDelegate:BusinessDelegate
+            +JobController(businessDelegate:BusinessDelegate)
+            +findAll():ResponseEntity<Iterable<Job>>
+            +find(id:Long):ResponseEntity<Job>
+            +save(job:Job):ResponseEntity<Job>
+            +delete(id:Long):ResponseEntity<String>
+        }
+    }
+    package entities {
+        +class Employee <<@Entity>> {
+            -id:Long
+            -name:String
+            -address:String
+            -sex:String
+            +Employee()
+            +Employee(name:String,address:String,sex:String)
+            +getId():Long
+            +setId(id:Long):void
+            +getName():String
+            +setName(name:String):void
+            +getAddress():String
+            +setAddress(String address):void
+            +getSex():String
+            +setSex(sex:String):void
+        }
+        +class Job <<@Entity>> {
+            -id:Long
+            -name:String
+            -usdSalary:Double
+            +Job()
+            +Job(name:String,usdSalary:Double)
+            +getId():Long
+            +setId(id:Long):void
+            +getName():String
+            +setName(name:String):void
+            +getUsdSalary():Double
+            +setUsdSalary(usdSalary:Double):void
+        }
+    }
+    package repositories {
+        +interface EmployeeRepository <<@Repository>> {
+
+        }
+        +interface JobRepository <<@Repository>> {
+
+        }
+    }
+    package services {
+        +class BusinessDelegate <<@Component>> {
+            -businessLookUp:BusinessLookUp
+            +BusinessDelegate(BusinessLookUp businessLookUp)
+            +<E>save(entity:E):E
+            +<E, K>find(entityType:Class<E>,id:K):Optional<E>
+            +<E>findAll(entityType:Class<E>):Iterable<E>
+            +<E>delete(entity:E):void
+            -<E>getKeyType(entityType:Class<E>):Class<?>
+        }
+        ~class BusinessLookUp <<@Component>> {
+            -employeeService:EmployeeService
+            -jobService:JobService
+            ~BusinessLookUp(employeeService:EmployeeService,jobService:JobService)
+            ~<E, K>getBusinessService(entityType:Class<E>,keyType:Class<K>):BusinessService<E, K>
+        }
+        ~interface BusinessService<E,K> {
+            +save(entity:E):E
+            +find(id:K):Optional<E>
+            +findAll():Iterable<E>
+            +delete(entity:E):void
+        }
+        ~class EmployeeService<Employee,Long> <<@Service>> {
+            -employeeRepository:EmployeeRepository
+            ~EmployeeService(employeeRepository:EmployeeRepository)
+        }
+        ~class JobService<Job,Long> <<@Service>> {
+            -jobRepository:JobRepository
+            ~JobRepository(jobRepository:EmployeeRepository)
+        }        
+    }
+}
+
+BusinessService <|.left. EmployeeService
+BusinessService <|.right. JobService
+
+Application -- InitDataLoader
+
+InitDataLoader -- BusinessDelegate
+
+BusinessLookUp -- EmployeeService
+BusinessLookUp -- JobService
+
+BusinessDelegate -- BusinessLookUp
+
+JobService -- JobRepository
+JobService -- Job
+
+EmployeeService -- EmployeeRepository
+EmployeeService -- Employee
+
+JobRepository -- Job
+
+EmployeeRepository -- Employee
+
+JobController -- BusinessDelegate
+JobController -- Job
+
+EmployeeController -- BusinessDelegate
+EmployeeController -- Employee
+@enduml

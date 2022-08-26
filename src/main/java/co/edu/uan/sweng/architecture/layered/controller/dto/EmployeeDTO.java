@@ -15,49 +15,21 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.edu.uan.sweng.architecture.layered.services;
+package co.edu.uan.sweng.architecture.layered.controller.dto;
 
-import java.util.Optional;
+import co.edu.uan.sweng.architecture.layered.entities.Employee;
 
 /**
- * Represents a basic CRUD business service.
+ * DTO for {@link Employee}
  *
- * @param <E> the entity type.
- * @param <K> the primary key type.
+ * @param id      the id.
+ * @param name    the name.
+ * @param address the address.
+ * @param sex     the sex.
  * @author Jorge Garcia
  * @author Diego Poveda
  * @version 1.0.0
  * @since 17
  */
-interface BusinessService<E, K> {
-
-    /**
-     * Saves an entity.
-     *
-     * @param entity the entity.
-     * @return the saved entity.
-     */
-    E save(E entity);
-
-    /**
-     * Finds an entity by its id.
-     *
-     * @param id the id.
-     * @return the requested entity.
-     */
-    Optional<E> find(K id);
-
-    /**
-     * Finds all the entities.
-     *
-     * @return all the entities.
-     */
-    Iterable<E> findAll();
-
-    /**
-     * Deletes an entity.
-     *
-     * @param entity the entity.
-     */
-    void delete(E entity);
+public record EmployeeDTO(Long id, String name, String address, String sex) {
 }

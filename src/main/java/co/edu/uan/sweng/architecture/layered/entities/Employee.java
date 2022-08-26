@@ -22,6 +22,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 import static javax.persistence.GenerationType.IDENTITY;
+import static org.apache.commons.lang3.math.NumberUtils.LONG_ZERO;
 
 /**
  * Employee.
@@ -47,13 +48,26 @@ public class Employee {
     }
 
     /**
-     * Constructor.
+     * Constructor. The {@code id} is set as zero.
      *
      * @param name    the name.
      * @param address the address.
      * @param sex     the sex.
      */
     public Employee(String name, String address, String sex) {
+        this(LONG_ZERO, name, address, sex);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param id      the id.
+     * @param name    the name.
+     * @param address the address.
+     * @param sex     the sex.
+     */
+    public Employee(Long id, String name, String address, String sex) {
+        this.id = id;
         this.name = name;
         this.address = address;
         this.sex = sex;
