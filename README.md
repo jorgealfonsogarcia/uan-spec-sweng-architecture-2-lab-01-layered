@@ -18,8 +18,8 @@ Software II, correspondiente al Laboratorio No.1 acerca de Arquitectura de Capas
 
 ### Requisitos
 
-* Java 17
-* Apache Maven 3
+* Java 17, disponible en https://adoptium.net/es/temurin/releases 
+* Apache Maven 3, disponible en https://maven.apache.org/download.html 
 * Tener localmente disponible el puerto 8080
 
 ### Construcción
@@ -59,8 +59,10 @@ java -jar uan-spec-sweng-architecture-2-lab-01-layered-1.0.0.jar
 
 #### Diagrama de Clases
 
-El diagrama representa el uso del patrón Business Delegate con base en el patrón Proxy para la separación de la capa de
-negocio.
+El diagrama representa el uso del patrón *Business Delegate* con base en el patrón *Proxy* para la separación de la capa
+de negocio. Los controladores y el `InitDataLoader` únicamente interactúan con la clase `BusinessDelegate` para obtener
+acceso a la lógica de negocio. `BusinessDelegate` a su vez utiliza la clase `BusinessLookup` para tener acceso a la clase
+de servicio correspondiente a la solicitud.
 
 ![Diagrama de Clases](uml/classes/classes.png)
 
