@@ -26,7 +26,7 @@ import java.lang.reflect.Field;
 import java.util.Optional;
 
 /**
- * Business delegate using the Adapter design pattern.
+ * Business delegate using the Proxy design pattern.
  *
  * @author Jorge Garcia
  * @author Diego Poveda
