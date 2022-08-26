@@ -31,7 +31,6 @@ mvn clean compile package
 ```
 
 * El archivo JAR lo encontrará en la carpeta `target`.
-* El archivo también se puede encontrar en la página de Github del proyecto, en el apartado "Packages".
 
 ### Ejecución
 
